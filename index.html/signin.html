@@ -4,21 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In - Be My Eyes AI</title>
-    <link rel="stylesheet" href="css/styles.css"> <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Sign In</h1>
-    
     <div class="form-container">
-        <form action="login.html" method="post">
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
+        <h1>Sign In</h1>
+        <form id="sign-in-form">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
             <button type="submit">Sign In</button>
         </form>
+        <p>Don't have an account? <a href="sign-up.html">Sign up here</a></p>
     </div>
-    
-    <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
 
-    <script src="js/script.js"></script> <!-- Link to the JavaScript file -->
+    <script src="js/script.js"></script>
 </body>
 </html>
+    
