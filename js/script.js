@@ -1,86 +1,133 @@
-// Handle Sign In
-document.getElementById('sign-in-form')?.addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form submission
+// For the Intro Page
+if (window.location.pathname.includes("index.html")) {
+    document.getElementById("sign-in-button").onclick = function() {
+        window.location.href = "sign-in.html"; // Navigate to the sign-in page
+    };
 
-    // Assuming the form is valid and the user is signed in
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    document.getElementById("sign-up-button").onclick = function() {
+        window.location.href = "sign-up.html"; // Navigate to the sign-up page
+    };
+}
 
-    // For demonstration, we will assume any email/password combo is valid
-    if (email && password) {
-        // Redirect to the main page after sign-in
-        window.location.href = 'main.html';  // This redirects to the main page
-    } else {
-        alert("Please enter a valid email and password.");
-    }
-});
+// For the Sign In Page
+if (window.location.pathname.includes("sign-in.html")) {
+    document.getElementById("sign-in-form").onsubmit = function(event) {
+        event.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
 
-// Handle Sign Up
-document.getElementById('sign-up-form')?.addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent form submission
+        if (email && password) {
+            // Dummy check for email and password (Replace with your real validation logic)
+            if (email === "test@example.com" && password === "password123") {
+                // Redirect to the main page
+                window.location.href = "main.html"; // Make sure to change this to the actual file path
+            } else {
+                alert("Invalid credentials, please try again.");
+            }
+        } else {
+            alert("Please enter both email and password.");
+        }
+    };
+}
 
-    // Assuming the form is valid and the user has been signed up
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+// For the Sign Up Page
+if (window.location.pathname.includes("sign-up.html")) {
+    document.getElementById("sign-up-form").onsubmit = function(event) {
+        event.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
 
-    // For demonstration, we will assume any email/password combo is valid
-    if (email && password) {
-        // Redirect to the main page after sign-up
-        window.location.href = 'main.html';  // This redirects to the main page
-    } else {
-        alert("Please enter a valid email and password.");
-    }
-});
+        if (email && password) {
+            // Dummy sign-up process (Replace with your actual sign-up logic)
+            alert("Account created successfully! Please sign in.");
+            window.location.href = "sign-in.html"; // Redirect to the Sign In page
+        } else {
+            alert("Please fill in all fields.");
+        }
+    };
+}
 
-// Access the user's camera
-const video = document.getElementById('video');
-const aiButton = document.getElementById('ai-button');
-const welcomeText = document.getElementById('welcome-text');
+// For the Main Page (AI and Camera Interaction)
+if (window.location.pathname.includes("main.html")) {
+    // Set up camera access
+    let aiButton = document.getElementById("ai-button");
+    let welcomeText = document.getElementById("welcome-text");
 
-// Start the camera stream
-navigator.mediaDevices.getUserMedia({ video: true })
-    .then(function(stream) {
-        video.srcObject = stream;
-    })
-    .catch(function(error) {
-        console.error("Error accessing camera: ", error);
+    // Load the COCO-SSD model for object recognition
+    let model;
+    cocoSsd.load().then((loadedModel) => {
+        model = loadedModel;
+        console.log("Model loaded successfully");
     });
 
-// AI Functionality
-function toggleAI() {
-    // When the user clicks the button
-    if (aiButton.classList.contains('listening')) {
-        aiButton.classList.remove('listening');
-        aiButton.style.backgroundColor = 'green';
-        welcomeText.innerHTML = 'Speak now. What would you like me to identify?';
-
-        // AI responds (with a pause)
-        setTimeout(function() {
-            speak("I am now ready to identify objects. Speak the name of the object.");
-        }, 1000);
-    } else {
-        aiButton.classList.add('listening');
-        aiButton.style.backgroundColor = 'red';
-        speak("Please wait while I process your request.");
-        
-        // Simulate AI response after a delay
-        setTimeout(function() {
-            speak("This is what the camera is pointing at: A book.");
-            aiButton.classList.remove('listening');
-            aiButton.style.backgroundColor = 'green';
-        }, 2000); // Simulated response delay
+    // Function to toggle between AI listening and speaking
+    function toggleAI() {
+        if (aiButton.classList.contains("green")) {
+            aiButton.classList.remove("green");
+            aiButton.classList.add("red");
+            aiButton.textContent = "Listening...";
+            welcomeText.textContent = "AI is identifying the object... Please wait.";
+            speakText("Please wait, I am identifying the object.");
+            // Start the object recognition
+            recognizeObject();
+        } else {
+            aiButton.classList.remove("red");
+            aiButton.classList.add("green");
+            aiButton.textContent = "Speak Now";
+            welcomeText.textContent = "You can now speak to the AI.";
+            speakText("You can now speak to the AI.");
+        }
     }
-}
 
-// Function for AI to speak
-function speak(text) {
-    const speech = new SpeechSynthesisUtterance(text);
-    speech.pitch = 1;
-    speech.rate = 1;
-    window.speechSynthesis.speak(speech);
-}
+    // Function to speak the text using the SpeechSynthesis API
+    function speakText(text) {
+        let utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1;  // Adjust speed
+        utterance.pitch = 1;  // Adjust pitch
+        utterance.volume = 1;  // Adjust volume
+        window.speechSynthesis.speak(utterance);
+    }
 
-// Initial AI greeting
-window.onload = function() {
-    speak("Welcome! You can ask me to identify what you want now.");
-};
+    // Function to recognize objects from the camera stream
+    async function recognizeObject() {
+        const video = document.getElementById("video");
+
+        // Use the model to detect objects in the current frame
+        const predictions = await model.detect(video);
+
+        if (predictions.length > 0) {
+            let object = predictions[0].class;
+            welcomeText.textContent = This is a ${object}.;
+            speakText(This is a ${object}. You can speak now.); // AI speaks the object name
+        } else {
+            welcomeText.textContent = "No objects detected, please try again.";
+            speakText("No objects detected, please try again.");
+        }
+
+        // Once object recognition is complete, change the button back to green
+        aiButton.classList.remove("red");
+        aiButton.classList.add("green");
+        aiButton.textContent = "Speak Now";
+    }
+
+    // Initialize the camera for object recognition
+    function startCamera() {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                let video = document.getElementById("video");
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function (error) {
+                console.error("Error accessing the camera: ", error);
+            });
+    }
+
+    // Initialize the camera when the page is loaded
+    window.onload = function () {
+        startCamera();
+    };
+
+    // Handle AI button click
+    aiButton.onclick = toggleAI;
+}
