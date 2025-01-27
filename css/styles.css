@@ -3,110 +3,92 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: black;
-    color: white;
-}
-
-/* Form Container for Sign In and Sign Up */
-.form-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-h1 {
-    color: #00aaff;
-    margin-bottom: 20px;
-}
-
-/* Form Inputs */
-input[type="email"],
-input[type="password"] {
-    padding: 10px;
-    margin: 10px;
-    width: 300px;
-    border: 1px solid #aaa;
-    border-radius: 5px;
-    background-color: #333;
-    color: white;
+    background-color: #121212; /* Black Background */
+    color: #fff; /* White Text */
 }
 
 button {
-    background-color: #00aaff;
-    color: white;
-    padding: 15px 25px;
-    font-size: 1rem;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #0066cc;
+    color: #fff;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #0088cc;
+    background-color: #004c99;
 }
 
-/* Sign In and Sign Up Links */
-a {
-    color: #00aaff;
-    text-decoration: none;
+/* Intro Page */
+.intro-container {
+    text-align: center;
+    padding: 50px;
 }
 
-a:hover {
-    text-decoration: underline;
+h1 {
+    font-size: 36px;
 }
 
-/* Main Page Layout */
-.container {
+button {
+    margin: 10px;
+}
+
+/* Form Container (Sign In / Sign Up) */
+.form-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+/* Main Page */
+.main-container {
     display: flex;
     height: 100vh;
 }
 
 .camera-container {
-    flex: 2;
-    background-color: black;
-}
-
-.left-side {
-    flex: 1;
-    background-color: black;
-    color: white;
-    padding: 20px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-}
-
-.left-side p {
-    font-size: 1.5rem;
-    text-align: center;
-}
-
-/* Right Section (1/3 of screen) with button */
-.right-side {
-    flex: 1;
-    background-color: black;
-    color: white;
+    width: 66.66%;
+    background-color: #000;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* AI Button */
-#ai-button {
-    background-color: green;
-    color: white;
-    padding: 15px 25px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.ai-container {
+    width: 33.33%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
-/* Change color when AI is listening (red) */
-#ai-button.listening {
-    background-color: red;
+#ai-button.green {
+    background-color: #4CAF50;
+}
+
+#ai-button.red {
+    background-color: #f44336;
+}
+
+.brand-name {
+    position: absolute;
+    left: 10px;
+    bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
 }
